@@ -28,9 +28,11 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-import re
 from wordcloud import WordCloud
+# Used to make plots appear in window.
+%matplotlib inline
 import matplotlib.pyplot as plt
+
 
 
 import ssl
@@ -78,10 +80,9 @@ cleaned_URLs = cleaned_URLs[~cleaned_URLs.Link.str.contains('pdf|jpg|jpeg|JPG|pn
 cleaned_URLs = cleaned_URLs.loc[cleaned_URLs['Clicks'] > 80]
 
 
-
 # Perform EDA
 
-""" AV = AutoViz_Class()
+AV = AutoViz_Class()
 filename = "" # Not Needed
 dft = AV.AutoViz(
     filename,
@@ -92,7 +93,7 @@ dft = AV.AutoViz(
     verbose=1,
     lowess=True,
     chart_format="svg",
-) """
+)
 
 
 # Time to scrape link data
@@ -116,7 +117,7 @@ for link in cleaned_URLs['Link']:
 
 # Text Preprocessing
 stop_words = set(stopwords.words('english'))
-stop_words_ext = ['n', 'please', 'nthe', 'license', 'cc', 'nmore', 'xa', 'c', 'u', 'r', 'f', 'licensing','licensed', 'licenses', 'creative commons','used','copyright'] # custom word exclusion list.
+stop_words_ext = ['http','n', 'please', 'nthe', 'license', 'cc', 'nmore', 'xa', 'c', 'u', 'r', 'f', 'licensing','licensed', 'licenses', 'creative commons','used','copyright'] # custom word exclusion list.
 
 def preprocess(text):
 
@@ -160,7 +161,6 @@ plt.imshow(wordcloud)
 plt.axis("off") 
 plt.tight_layout(pad = 0) 
 plt.show()
-plt.savefig('test.png')
 
 
 # create subplot of the different data frames
