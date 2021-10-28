@@ -155,14 +155,14 @@ number_of_words = len(cleaned_soupey)
 
 cleaned_soupey = " ".join(cleaned_soupey)
 wordcloud = WordCloud(width = 700, height = 700, background_color ='white', min_font_size = 10).generate((cleaned_soupey))
-import streamlit as st
+
 # plot the WordCloud image                        
-figtest = plt.figure(figsize = (10, 10), facecolor = None) 
+plt.figure(figsize = (10, 10), facecolor = None) 
 plt.imshow(wordcloud) 
 plt.axis("off") 
 plt.tight_layout(pad = 0) 
 plt.show()
-st.write(figtest)
+
 
 
 # create subplot of the different data frames
@@ -175,7 +175,6 @@ sns.barplot(ax=axes[2],x='frequency',y='trigrams',data=trigrams.head(30))
 
 
 print("Script Finished")
-
 
 
 
