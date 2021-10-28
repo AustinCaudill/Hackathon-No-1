@@ -30,7 +30,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from wordcloud import WordCloud
 # Used to make plots appear in window.
-%matplotlib inline
+# %matplotlib inline
 import matplotlib.pyplot as plt
 
 
@@ -76,8 +76,7 @@ cleaned_URLs = link_data.loc[link_data['Result'] == True]
 cleaned_URLs = cleaned_URLs[~cleaned_URLs.Link.str.contains('pdf|jpg|jpeg|JPG|png|cgi')]
 
 # Combine duplicates
-cleaned_URLs = cleaned_URLs.groupby(by='Link').sum()
-#cleaned_URLs.to_frame()
+cleaned_URLs = cleaned_URLs.groupby(by='Link', as_index=False)[['Clicks']].sum()
 
 threshold = 80 # Minimum number of clicks before a link is evaluated.
 cleaned_URLs = cleaned_URLs.loc[cleaned_URLs['Clicks'] > threshold]
@@ -156,13 +155,14 @@ number_of_words = len(cleaned_soupey)
 
 cleaned_soupey = " ".join(cleaned_soupey)
 wordcloud = WordCloud(width = 700, height = 700, background_color ='white', min_font_size = 10).generate((cleaned_soupey))
-  
+import streamlit as st
 # plot the WordCloud image                        
-plt.figure(figsize = (10, 10), facecolor = None) 
+figtest = plt.figure(figsize = (10, 10), facecolor = None) 
 plt.imshow(wordcloud) 
 plt.axis("off") 
 plt.tight_layout(pad = 0) 
 plt.show()
+st.write(figtest)
 
 
 # create subplot of the different data frames
@@ -175,3 +175,7 @@ sns.barplot(ax=axes[2],x='frequency',y='trigrams',data=trigrams.head(30))
 
 
 print("Script Finished")
+
+
+
+
