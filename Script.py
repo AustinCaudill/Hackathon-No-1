@@ -1,7 +1,8 @@
 """ 
-
 Austin Caudill
+10/28/2021
 
+Submission for Avery Smith's Data Science Hackathon
 
 Questions to be answered:
 What affects open %?​
@@ -30,9 +31,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from wordcloud import WordCloud
 # Used to make plots appear in window.
-# %matplotlib inline
+%matplotlib inline
 import matplotlib.pyplot as plt
-
+import numpy as np
+from PIL import Image
 
 
 import ssl
@@ -154,14 +156,17 @@ number_of_words = len(cleaned_soupey)
 
 
 cleaned_soupey = " ".join(cleaned_soupey)
-wordcloud = WordCloud(width = 700, height = 700, background_color ='white', min_font_size = 10).generate((cleaned_soupey))
 
-# plot the WordCloud image                        
-plt.figure(figsize = (10, 10), facecolor = None) 
-plt.imshow(wordcloud) 
-plt.axis("off") 
-plt.tight_layout(pad = 0) 
-plt.show()
+
+mask = np.array(Image.open("flask3.png"))
+wordcloud = WordCloud(background_color ='white', prefer_horizontal=1, mask=mask, contour_width=5, contour_color='black', colormap='bone').generate((cleaned_soupey))
+
+# plot the WordCloud image 
+plt.figure( figsize=(20,10) )                       
+plt.imshow(wordcloud)
+plt.axis("off")
+
+
 
 
 
@@ -175,6 +180,3 @@ sns.barplot(ax=axes[2],x='frequency',y='trigrams',data=trigrams.head(30))
 
 
 print("Script Finished")
-
-
-
