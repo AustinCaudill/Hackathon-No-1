@@ -62,13 +62,11 @@ for f in files:
 # Need to cleanup by removing rows with "nan"
 link_data = link_data.dropna()
 
-bad_URLS = 0
 result = []
 # Need to remove bad URLs
 for l in link_data['Link']:
     try:
         test = validators.url(l)
-        print(test)
         result.append(test)
     except:
         result.append("FAILED")
@@ -77,11 +75,15 @@ link_data['Result'] = result
 cleaned_URLs = link_data.loc[link_data['Result'] == True]
 cleaned_URLs = cleaned_URLs[~cleaned_URLs.Link.str.contains('pdf|jpg|jpeg|JPG|png|cgi')]
 
-cleaned_URLs = cleaned_URLs.loc[cleaned_URLs['Clicks'] > 80]
+# Combine duplicates
+cleaned_URLs = cleaned_URLs.groupby(by='Link').sum()
+#cleaned_URLs.to_frame()
+
+threshold = 80 # Minimum number of clicks before a link is evaluated.
+cleaned_URLs = cleaned_URLs.loc[cleaned_URLs['Clicks'] > threshold]
 
 
 # Perform EDA
-
 AV = AutoViz_Class()
 filename = "" # Not Needed
 dft = AV.AutoViz(
@@ -90,7 +92,7 @@ dft = AV.AutoViz(
     depVar="Open Rate", # Target Variable
     dfte=email_summary,
     header=0,
-    verbose=1,
+    verbose=2,
     lowess=True,
     chart_format="svg",
 )
@@ -145,11 +147,11 @@ def preprocess(text):
 
     return cleaned_words,word_freq,word_pairs,trigrams
 
+
 soupey = str(soupey)
 cleaned_soupey,word_freq,word_pairs,trigrams = preprocess(soupey)    
 
 number_of_words = len(cleaned_soupey)
-print(number_of_words)
 
 
 cleaned_soupey = " ".join(cleaned_soupey)
