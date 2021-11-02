@@ -1,6 +1,6 @@
 """ 
 Austin Caudill
-10/28/2021
+11/01/2021
 
 Submission for Avery Smith's Data Science Hackathon
 
@@ -30,7 +30,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from wordcloud import WordCloud
-# Used to make plots appear in window.
+# Used to make plots appear in window in IDE.
 %matplotlib inline
 import matplotlib.pyplot as plt
 import numpy as np
@@ -75,7 +75,8 @@ for l in link_data['Link']:
 
 link_data['Result'] = result
 cleaned_URLs = link_data.loc[link_data['Result'] == True]
-cleaned_URLs = cleaned_URLs[~cleaned_URLs.Link.str.contains('pdf|jpg|jpeg|JPG|png|cgi')]
+# Remove filetypes that cannot be scraped.
+cleaned_URLs = cleaned_URLs[~cleaned_URLs.Link.str.contains('pdf|jpg|jpeg|JPG|png|cgi|creativecommons')]
 
 # Combine duplicates
 cleaned_URLs = cleaned_URLs.groupby(by='Link', as_index=False)[['Clicks']].sum()
@@ -110,7 +111,8 @@ for link in cleaned_URLs['Link']:
         if req.status != 200: 
             continue
         soup = BeautifulSoup(req.data, "html.parser")
-        text = soup.get_text()
+        body = soup.find('body')
+        text = text.get_text()
         print(text)
         soupey.append(text)
     except:
@@ -120,7 +122,7 @@ for link in cleaned_URLs['Link']:
 
 # Text Preprocessing
 stop_words = set(stopwords.words('english'))
-stop_words_ext = ['http','n', 'please', 'nthe', 'license', 'cc', 'nmore', 'xa', 'c', 'u', 'r', 'f', 'licensing','licensed', 'licenses', 'creative commons','used','copyright'] # custom word exclusion list.
+stop_words_ext = ['http','n', 'please', 'nthe', 'license', 'cc', 'nmore', 'xa', 'c', 'u', 'r', 'f', 'licensing','licensed', 'licenses', 'creative commons','used','copyright','ha','wa','edit', 'archived', 'original'] # custom word exclusion list.
 
 def preprocess(text):
 
