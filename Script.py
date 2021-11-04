@@ -112,7 +112,7 @@ for link in cleaned_URLs['Link']:
             continue
         soup = BeautifulSoup(req.data, "html.parser")
         body = soup.find('body')
-        text = text.get_text()
+        text = body.get_text()
         print(text)
         soupey.append(text)
     except:
