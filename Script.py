@@ -89,12 +89,12 @@ cleaned_URLs = cleaned_URLs.loc[cleaned_URLs['Clicks'] > threshold]
 AV = AutoViz_Class()
 filename = "" # Not Needed
 dft = AV.AutoViz(
-    filename,
+    filename,l
     sep=",",
     depVar="Open Rate", # Target Variable
     dfte=email_summary,
     header=0,
-    verbose=2,
+    verbose=1,
     lowess=True,
     chart_format="svg",
 )
